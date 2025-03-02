@@ -27,6 +27,12 @@
 
 
     <h1 class="mb-4">Panel Technika</h1>
+    <p class="text-muted">
+    Aktualny pokój: <span id="currentRoom"></span> |
+    <a href="#" onclick="changeRoom()">Zmień pokój</a>
+</p>
+
+
     <textarea id="messageInput" class="form-control mb-3" rows="4" placeholder="Wpisz wiadomość"></textarea>
     <div class="mb-3">
         <button class="btn btn-primary mr-2" onclick="sendMessage()">Wyślij</button>

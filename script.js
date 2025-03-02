@@ -20,6 +20,7 @@ function checkRoomCode() {
         localStorage.setItem('eventscreen_room', room);
         document.getElementById('roomModal').style.display = 'none';
         initAfterRoomSet();
+        showCurrentRoom();
     }
 }
 
@@ -34,6 +35,17 @@ function setRoomCode() {
         alert('Podaj poprawny 4-cyfrowy kod.');
     }
 }
+
+function showCurrentRoom() {
+    const room = getRoomCode();
+    document.getElementById('currentRoom').innerText = room;
+}
+
+function changeRoom() {
+    localStorage.removeItem('eventscreen_room');
+    window.location.search = ''; // usuwamy room z URL, wymusi pokazanie modala
+}
+
 
 
 

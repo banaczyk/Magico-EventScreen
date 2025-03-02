@@ -2,18 +2,12 @@
 <html lang="pl">
 <head>
     <title>Ekran Muzyka</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+   
     <script src="script.js"></script>
     <style>
         body {
             background: black;
-            color: white;
-            font-size: 100px;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
         }
         body.flash {
             animation: flash 0.5s 2;
@@ -21,6 +15,13 @@
         @keyframes flash {
             0%, 100% { background-color: black; }
             50% { background-color: red; }
+        }
+
+        #messageDisplay {
+            color: white;
+            text-align: center;
+            font-size: 100px;
+            padding: 30px;
         }
     </style>
 </head>
@@ -45,12 +46,21 @@
 
     <div id="messageDisplay"></div>
 
-    <script>
+
+    <div id="roomInfo" style="position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; padding: 5px 10px; border-radius: 5px; font-size: 14px;">
+    Pokój: <span id="currentRoom"></span>
+    <a href="#" onclick="changeRoom()" style="color: #f8d7da; text-decoration: underline;">Zmień pokój</a>
+</div>
+
+
+<script>
     function initAfterRoomSet() {
         pollMessage();
+        showCurrentRoom();
     }
     checkRoomCode();
 </script>
+
 
 </body>
 </html>
