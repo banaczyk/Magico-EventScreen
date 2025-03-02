@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
    
     <script src="script.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <style>
         body {
             background: black;
@@ -23,6 +24,12 @@
             font-size: 100px;
             padding: 30px;
         }
+
+        @media (max-width: 768px) { /* lub inna wartość, w zależności od tego, kiedy chcesz zmienić rozmiar */
+    #messageDisplay {
+        font-size: 50px;
+    }
+}
     </style>
 </head>
 <body>

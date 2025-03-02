@@ -1,4 +1,5 @@
 <?php
+
 $room = $_GET['room'] ?? $_POST['room'] ?? null;
 
 if (!$room || !preg_match('/^\d{4}$/', $room)) {
