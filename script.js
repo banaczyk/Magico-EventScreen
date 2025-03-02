@@ -1,13 +1,52 @@
+function getRoomCode() {
+    const urlParams = new URLSearchParams(window.location.search);
+    let room = urlParams.get('room');
+    if (!room) {
+        room = localStorage.getItem('eventscreen_room');
+    }
+    if (!room) {
+        alert('Brak kodu pokoju!');
+        throw new Error('Brak kodu pokoju');
+    }
+    return room;
+}
+
+function checkRoomCode() {
+    let room = new URLSearchParams(window.location.search).get('room') || localStorage.getItem('eventscreen_room');
+
+    if (!room || !/^\d{4}$/.test(room)) {
+        document.getElementById('roomModal').style.display = 'block';
+    } else {
+        localStorage.setItem('eventscreen_room', room);
+        document.getElementById('roomModal').style.display = 'none';
+        initAfterRoomSet();
+    }
+}
+
+
+
+function setRoomCode() {
+    const room = document.getElementById('roomCodeInput').value;
+    if (/^\d{4}$/.test(room)) {
+        localStorage.setItem('eventscreen_room', room);
+        window.location.search = '?room=' + room;  // przekierowanie z kodem w URL
+    } else {
+        alert('Podaj poprawny 4-cyfrowy kod.');
+    }
+}
+
+
+
 function sendMessage() {
     const message = document.getElementById('messageInput').value;
-    fetch('action.php', {
+    fetch(`action.php?room=${getRoomCode()}`, {
         method: 'POST',
         body: new URLSearchParams({action: 'send', message})
     }).then(fetchMessage);
 }
 
 function clearMessage() {
-    fetch('action.php', {
+    fetch(`action.php?room=${getRoomCode()}`, {
         method: 'POST',
         body: new URLSearchParams({action: 'clear'})
     }).then(fetchMessage);
@@ -16,7 +55,7 @@ function clearMessage() {
 
 
 function fetchMessage() {
-    fetch('action.php')
+    fetch(`action.php?room=${getRoomCode()}`)
         .then(response => response.json())
         .then(data => {
             document.getElementById('currentMessage').innerText = data.message || 'Brak komunikatu';
@@ -25,7 +64,7 @@ function fetchMessage() {
 }
 
 function pollMessage() {
-    fetch('action.php')
+    fetch(`action.php?room=${getRoomCode()}`)
         .then(response => response.json())
         .then(data => {
             const display = document.getElementById('messageDisplay');
@@ -56,14 +95,14 @@ function flashScreen() {
 }
 
 function clearFlash() {
-    fetch('action.php', {
+    fetch(`action.php?room=${getRoomCode()}`, {
         method: 'POST',
         body: new URLSearchParams({action: 'clearFlash'})
     });
 }
 
 function triggerManualFlash() {
-    fetch('action.php', {
+    fetch(`action.php?room=${getRoomCode()}`, {
         method: 'POST',
         body: new URLSearchParams({action: 'flash'})
     });
@@ -71,12 +110,11 @@ function triggerManualFlash() {
 
 
 
-
-
 let flashInterval = null;
 
 function updateFlashIndicator(isFlashing) {
     const indicator = document.getElementById('flashIndicator');
+    if (!indicator) return; // zabezpieczenie dla screen.php, gdzie nie ma flashIndicator
 
     if (isFlashing) {
         if (!flashInterval) {
@@ -92,6 +130,4 @@ function updateFlashIndicator(isFlashing) {
         indicator.style.backgroundColor = 'grey';
     }
 }
-
-setInterval(fetchMessage, 1000);  // auto refresh co sekundę
 

@@ -1,5 +1,22 @@
 <?php
-$file = 'message.json';
+$room = $_GET['room'] ?? $_POST['room'] ?? null;
+
+if (!$room || !preg_match('/^\d{4}$/', $room)) {
+    header('Content-Type: application/json');
+    echo json_encode(['error' => 'Nieprawidłowy kod pokoju']);
+    exit;
+}
+
+$dir = 'messages';
+
+// Upewnij się, że katalog messages istnieje
+if (!is_dir($dir)) {
+    mkdir($dir, 0777, true);
+}
+
+// Plik dla tej konkretnej grupy
+$file = "$dir/message_$room.json";
+
 
 // Tworzenie pliku jeśli nie istnieje
 if (!file_exists($file)) {
